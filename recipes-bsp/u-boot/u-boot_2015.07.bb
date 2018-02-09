@@ -11,6 +11,7 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=0507cd7da8e7ad6d6701926ec9b84c95"
 SRCREV = "33711bdd4a4dce942fb5ae85a68899a8357bdd94"
 
 SRC_URI = "git://git.denx.de/u-boot.git;branch=master;protocol=git \
+           file://gcc7.compilation.patch \
 	   file://boot.cmd \
           "
 
