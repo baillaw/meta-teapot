@@ -12,8 +12,9 @@ RDEPENDS_${KERNEL_PACKAGE_NAME}-base += "kernel-devicetree"
 KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
 
 SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
-	        file://sunxi-sata-enable-pmp.patch \
-          file://add-sdma-firmware-for-freescale-imx-socs.patch;apply=false \
+          file://sdma-firmware/sdma-imx51.bin \
+          file://wifi-firmware/rt2870.bin \
+          file://sunxi-sata-enable-pmp.patch \
           file://dts-imx51-add-sahara-v4-entry.patch \
           file://dts-imx51-na04.patch \
           file://regulator-mc13892.patch \
@@ -28,10 +29,11 @@ S = "${WORKDIR}/linux-${PV}"
 # add required ecafe blobs to the kernel
 addtask do_blobs before do_compile after do_configure
 do_blobs () {
-  if [ "${MACHINE}" = "ecafe" ]; then
-    cd ${WORKDIR}/linux-${PV}
-    git apply ${WORKDIR}/add-sdma-firmware-for-freescale-imx-socs.patch 2> /dev/null || true
-    cp -rf ${PKG_CONFIG_SYSROOT_DIR}/lib/firmware/rt2870.bin firmware/
+  if [ "${KMACHINE}" = "ecafe" ]; then
+    mkdir -p ${S}/firmware/imx/sdma/
+	cp ${WORKDIR}/sdma-firmware/sdma-imx51.bin ${S}/firmware/imx/sdma/sdma-imx51.bin
+    cp ${WORKDIR}/wifi-firmware/rt2870.bin ${S}/firmware/rt2870.bin
+
   fi
 }
 
